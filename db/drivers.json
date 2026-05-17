@@ -1,0 +1,156 @@
+[
+    {
+        "name": "Edgar",
+        "location": "CityA",
+        "speed": 123.0,
+        "route": "routeA",
+        "weather": "rain",
+        "fuel": 15.0,
+        "temperature": 95.0,
+        "fatigue": 74.0,
+        "timestamp": "2026-05-17T12:31:47.378289"
+    },
+    {
+        "name": "RegressionTest",
+        "location": "X",
+        "speed": 50.0,
+        "route": "",
+        "weather": "clear",
+        "fuel": 100,
+        "temperature": 0,
+        "fatigue": 0,
+        "timestamp": "2026-05-17T13:14:06.520038"
+    },
+    {
+        "name": "Alice",
+        "location": "HQ",
+        "speed": 55.0,
+        "route": "routeC",
+        "weather": "clear",
+        "fuel": 85.0,
+        "temperature": 72.0,
+        "fatigue": 10.0,
+        "timestamp": "2026-05-17T13:14:06.606170"
+    },
+    {
+        "name": "Bob",
+        "location": "Warehouse",
+        "speed": 82.0,
+        "route": "routeA",
+        "weather": "clear",
+        "fuel": 40.0,
+        "temperature": 78.0,
+        "fatigue": 30.0,
+        "timestamp": "2026-05-17T13:14:06.608752"
+    },
+    {
+        "name": "Carlos",
+        "location": "Downtown",
+        "speed": 95.0,
+        "route": "routeB",
+        "weather": "rain",
+        "fuel": 60.0,
+        "temperature": 80.0,
+        "fatigue": 20.0,
+        "timestamp": "2026-05-17T13:14:06.613776"
+    },
+    {
+        "name": "Diana",
+        "location": "Suburbs",
+        "speed": 30.0,
+        "route": "school_zone",
+        "weather": "clear",
+        "fuel": 75.0,
+        "temperature": 70.0,
+        "fatigue": 15.0,
+        "timestamp": "2026-05-17T13:14:06.617294"
+    },
+    {
+        "name": "Ethan",
+        "location": "Depot",
+        "speed": 70.0,
+        "route": "construction",
+        "weather": "fog",
+        "fuel": 18.0,
+        "temperature": 95.0,
+        "fatigue": 75.0,
+        "timestamp": "2026-05-17T13:14:06.619817"
+    },
+    {
+        "name": "Alice",
+        "location": "HQ",
+        "speed": 55.0,
+        "route": "routeC",
+        "weather": "clear",
+        "fuel": 85.0,
+        "temperature": 72.0,
+        "fatigue": 10.0,
+        "timestamp": "2026-05-17T14:10:32.310336"
+    },
+    {
+        "name": "Bob",
+        "location": "Warehouse",
+        "speed": 82.0,
+        "route": "routeA",
+        "weather": "clear",
+        "fuel": 40.0,
+        "temperature": 78.0,
+        "fatigue": 30.0,
+        "timestamp": "2026-05-17T14:10:32.326245"
+    },
+    {
+        "name": "Carlos",
+        "location": "Downtown",
+        "speed": 95.0,
+        "route": "routeB",
+        "weather": "rain",
+        "fuel": 60.0,
+        "temperature": 80.0,
+        "fatigue": 20.0,
+        "timestamp": "2026-05-17T14:10:32.332072"
+    },
+    {
+        "name": "Diana",
+        "location": "Suburbs",
+        "speed": 30.0,
+        "route": "routeC",
+        "weather": "clear",
+        "fuel": 75.0,
+        "temperature": 70.0,
+        "fatigue": 15.0,
+        "timestamp": "2026-05-17T14:10:32.335095"
+    },
+    {
+        "name": "Ethan",
+        "location": "Depot",
+        "speed": 70.0,
+        "route": "routeB",
+        "weather": "fog",
+        "fuel": 18.0,
+        "temperature": 95.0,
+        "fatigue": 75.0,
+        "timestamp": "2026-05-17T14:10:32.339190"
+    },
+    {
+        "name": "EGA",
+        "location": "123",
+        "speed": 60.0,
+        "route": "",
+        "weather": "clear",
+        "fuel": 80.0,
+        "temperature": 70.0,
+        "fatigue": 0.0,
+        "timestamp": "2026-05-17T14:12:08.401312"
+    },
+    {
+        "name": "Alice",
+        "location": "HQ",
+        "speed": 75.0,
+        "route": "routeA",
+        "weather": "rain",
+        "fuel": 15.0,
+        "temperature": 95.0,
+        "fatigue": 95.0,
+        "timestamp": "2026-05-17T18:40:14.663688"
+    }
+]

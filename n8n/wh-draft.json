@@ -1,0 +1,97 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "test-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -272,
+        -192
+      ],
+      "id": "1eed85cf-26bf-4a59-acc8-607aa884d34d",
+      "name": "Webhook",
+      "webhookId": "2b0eb8ff-f21a-4894-a668-4996e92c647f"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9711b06a-32a6-4fca-a8f2-fc4a75607b6a",
+              "name": "message",
+              "value": "webhook rec",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -192
+      ],
+      "id": "80396a3c-60ec-44aa-9f91-16c3e19686c2",
+      "name": "Log Data"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"Data received\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        224,
+        -192
+      ],
+      "id": "a783688d-a5f8-4b85-a55a-56a419dabfd6",
+      "name": "Respond to Webhook",
+      "alwaysOutputData": false
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Log Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Data": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ac126eb5-600a-456e-8775-871f55feeef5",
+  "meta": {
+    "instanceId": "c276a93b266badf73c5f9323b0b53a5461bc44cbd603fe5a2298069cd2d4719a"
+  },
+  "id": "1s8ceGMjbeGIIMyX",
+  "tags": []
+}

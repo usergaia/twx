@@ -1,0 +1,191 @@
+{
+  "name": "Email webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "form-submit",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dbcd3d6f-f5f1-4525-8afa-3e1cf8344d5c",
+      "name": "Webhook",
+      "webhookId": "01185675-e683-4dc6-9ad7-9cac888b6988"
+    },
+    {
+      "parameters": {
+        "fromEmail": "admin@email.com",
+        "toEmail": "={{ $json.customer_email }}",
+        "subject": "Order Received",
+        "html": "=Hello {{$json.customer_name}},\nYour order for {{$json.order_type}} has been received.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        704,
+        -144
+      ],
+      "id": "eefff023-4942-4cea-9522-748a71762b4d",
+      "name": "Send an Email",
+      "webhookId": "0c14522c-9b89-4481-9d85-4515536c974c",
+      "credentials": {
+        "smtp": {
+          "id": "stSbkXnsbNNA1Gz8",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e3bb1aad-e9ec-42d5-855e-f4cbf7b0998e",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5f7e7154-9b9e-423e-b9f9-b52acd114bff",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"customer_name\": {{$json.body.name}},\n  \"customer_email\": {{$json.body.email}},\n  \"order_type\": {{$json.body.order}}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        -144
+      ],
+      "id": "2aa513ce-0239-4040-9b48-998a6392a698",
+      "name": "Map Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"Form submitted\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        912,
+        -144
+      ],
+      "id": "678a7112-91bf-4908-9890-64dd93dfb94c",
+      "name": "Success Response to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"error\",\n  \"message\": \"Form empty\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        464,
+        16
+      ],
+      "id": "39f35f16-4df3-4998-832a-ce833591a9fe",
+      "name": "Error Response to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Map Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Response to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        [
+          {
+            "node": "Success Response to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Fields": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "0dee1c33-36ae-470e-8d6a-433ec3492f0e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a98d72c166fec639d01a456b6b88f6890ad3c0ceca8f31ef60d65d2663c9f026"
+  },
+  "id": "qsmXBJbOvq53cPlt",
+  "tags": []
+}

@@ -1,0 +1,6 @@
+name,location,speed,route,weather,fuel,temperature,fatigue
+Alice,HQ,55,routeC,clear,85,72,10
+Bob,Warehouse,82,routeA,clear,40,78,30
+Carlos,Downtown,95,routeB,rain,60,80,20
+Diana,Suburbs,30,routeC,clear,75,70,15
+Ethan,Depot,70,routeB,fog,18,95,75

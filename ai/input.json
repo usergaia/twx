@@ -1,0 +1,9 @@
+{
+    "name": "Driver1",
+    "speed": 75,
+    "location": "CityA",
+    "route": "routeA",
+    "weather": "rain",
+    "fuel": 15,
+    "temperature": 95
+}
