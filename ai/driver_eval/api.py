@@ -1,24 +1,15 @@
 import io
-import os
-import sys
 from pathlib import Path
 from typing import List, Literal
 
 import pandas as pd
-from fastapi import FastAPI, File, HTTPException, UploadFile
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel, ValidationError
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from .modules.evaluate_driver import evaluate_driver
+from .modules.storage import DRIVERS_PATH, RESULTS_PATH, append_to_json
 
-from driver_decision_system import (
-    DRIVERS_PATH,
-    RESULTS_PATH,
-    append_to_json,
-    evaluate_driver,
-)
-
-DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "drivers.csv"
+DATA_PATH = Path(__file__).resolve().parent / "data" / "drivers.csv"
 REQUIRED_CSV_COLUMNS = {"name", "location", "speed"}
 
 
@@ -61,24 +52,10 @@ def _df_to_drivers(df: pd.DataFrame) -> List[DriverInput]:
     return drivers
 
 
-app = FastAPI()
+router = APIRouter()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-@app.get("/")
-def home():
-    return {"message": "Smart Logistics AI API"}
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-@app.post("/evaluate", response_model=EvaluationResult)
+@router.post("/evaluate", response_model=EvaluationResult)
 def evaluate(driver: DriverInput):
     payload = driver.model_dump()
     result = evaluate_driver(payload)
@@ -86,7 +63,8 @@ def evaluate(driver: DriverInput):
     append_to_json(DRIVERS_PATH, {**payload, "timestamp": result["timestamp"]})
     return result
 
-@app.post("/drivers/batch", response_model=UploadResponse)
+
+@router.post("/drivers/batch", response_model=UploadResponse)
 async def upload_drivers_batch(file: UploadFile = File(...)):
     content = await file.read()
     try:
@@ -109,7 +87,7 @@ async def upload_drivers_batch(file: UploadFile = File(...)):
     return UploadResponse(filename=file.filename or "drivers.csv", row_count=len(drivers))
 
 
-@app.get("/drivers/batch", response_model=List[DriverInput])
+@router.get("/drivers/batch", response_model=List[DriverInput])
 def read_drivers_batch():
     if not DATA_PATH.exists():
         return []
@@ -126,7 +104,7 @@ def read_drivers_batch():
         )
 
 
-@app.post("/drivers/batch/evaluate", response_model=List[EvaluationResult])
+@router.post("/drivers/batch/evaluate", response_model=List[EvaluationResult])
 def evaluate_drivers_batch():
     if not DATA_PATH.exists():
         raise HTTPException(status_code=404, detail="no drivers CSV uploaded yet")

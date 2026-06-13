@@ -137,7 +137,7 @@ export default function DriversBatchPage() {
                 <CardDescription>
                   {rows.length === 0
                     ? "No dataset uploaded yet."
-                    : `${rows.length} driver${rows.length === 1 ? "" : "s"} stored at ai/data/drivers.csv.`}
+                    : `${rows.length} driver${rows.length === 1 ? "" : "s"} stored at ai/driver_eval/data/drivers.csv.`}
                 </CardDescription>
               </div>
               <Button
