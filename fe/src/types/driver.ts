@@ -1,6 +1,6 @@
-// Future-ownership notes (Week 3+ when Laravel lands):
-// - ROUTE_OPTIONS will become a `GET /api/routes` fetch from Laravel (routes table, Week 7+).
-// - DriverInput.{name, location} will be derived from a Laravel Driver record (Week 3 CRUD);
+// Future-ownership notes (when Laravel lands):
+// - ROUTE_OPTIONS will become a `GET /api/routes` fetch from Laravel (routes table).
+// - DriverInput.{name, location} will be derived from a Laravel Driver record (Laravel CRUD);
 //   a separate types/driver-record.ts will hold the canonical Laravel-owned shape.
 // - WEATHER_OPTIONS, DriverStatus, EvaluationResult stay here — UI taxonomy and AI-service wire format.
 
