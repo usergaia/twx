@@ -26,7 +26,7 @@ import {
   type Weather,
 } from "@/types";
 
-// TODO Week 3: once Laravel exposes `GET /api/drivers`, replace the free-text `name`
+// TODO: once Laravel exposes `GET /api/drivers`, replace the free-text `name`
 // and `location` inputs with a select-from-list bound to laravelClient.listDrivers().
 // Driver identity is Laravel-owned; only the situational fields below stay client-collected.
 // Numeric bounds below are intentionally loose — authoritative validation lives on the AI
@@ -44,7 +44,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 interface DriverEvaluateFormProps {
-  onResult: (result: EvaluationResult) => void;
+  onResult: (result: EvaluationResult, input: DriverInput) => void;
 }
 
 export function DriverEvaluateForm({ onResult }: DriverEvaluateFormProps) {
@@ -74,7 +74,7 @@ export function DriverEvaluateForm({ onResult }: DriverEvaluateFormProps) {
     };
     try {
       const result = await aiClient.evaluate(payload);
-      onResult(result);
+      onResult(result, payload);
       toast.success(`Evaluated ${result.name}: ${result.score} (${result.status})`);
     } catch (err) {
       const message = err instanceof ApiError ? err.message : (err as Error).message;

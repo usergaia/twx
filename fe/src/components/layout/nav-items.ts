@@ -9,6 +9,7 @@ import {
   MessageSquare,
   Package,
   Route,
+  ScanText,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -40,6 +41,13 @@ export const navItems: NavItem[] = [
     href: "/drivers/batch",
     icon: FileSpreadsheet,
     ready: true,
+  },
+  {
+    label: "Text Analyzer",
+    href: "/analyzer",
+    icon: ScanText,
+    ready: true,
+    week: 7,
   },
   { label: "Drivers", href: "/drivers", icon: Users, ready: false, week: 5 },
   { label: "Orders", href: "/orders", icon: Package, ready: false, week: 5 },
