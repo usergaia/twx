@@ -1,0 +1,148 @@
+{
+  "name": "Driver evaluation webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "driver-eval",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a1f3c2d4-1111-4a00-9c10-000000000001",
+      "name": "Webhook",
+      "webhookId": "a1f3c2d4-1111-4a00-9c10-000000000001"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ai:8001/evaluate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a1f3c2d4-2222-4a00-9c10-000000000002",
+      "name": "Evaluate Driver (AI API)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b2a4d3e5-0001-4a00-9c10-000000000010",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "b2a4d3e5-0002-4a00-9c10-000000000011",
+              "name": "driver",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "b2a4d3e5-0003-4a00-9c10-000000000012",
+              "name": "score",
+              "value": "={{ $json.score }}",
+              "type": "number"
+            },
+            {
+              "id": "b2a4d3e5-0004-4a00-9c10-000000000013",
+              "name": "risk_status",
+              "value": "={{ $json.status }}",
+              "type": "string"
+            },
+            {
+              "id": "b2a4d3e5-0005-4a00-9c10-000000000014",
+              "name": "alerts",
+              "value": "={{ $json.alerts }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        0
+      ],
+      "id": "a1f3c2d4-3333-4a00-9c10-000000000003",
+      "name": "Format Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "a1f3c2d4-4444-4a00-9c10-000000000004",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Driver (AI API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Driver (AI API)": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "00000000-aaaa-4a00-9c10-000000000099",
+  "meta": {
+    "instanceId": "a98d72c166fec639d01a456b6b88f6890ad3c0ceca8f31ef60d65d2663c9f026"
+  },
+  "id": "DriverEvalWH0001",
+  "tags": []
+}

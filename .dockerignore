@@ -1,0 +1,11 @@
+# Keep the build context small. Without this the multi-hundred-MB ai/.venv
+# gets shipped into the image build.
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+.git
+.vscode
+fe
+n8n
+*.md

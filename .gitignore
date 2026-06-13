@@ -1,3 +1,11 @@
 .claude
 *.md
 *.pdf
+
+# Local deploy config — holds host IPs / secrets. Commit .env.example, never .env.
+.env
+.env.local
+!.env.example
+
+# Flat-file AI persistence — runtime append-logs, regenerated on use (headed for Postgres).
+db/*.json

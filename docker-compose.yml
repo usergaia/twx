@@ -1,0 +1,72 @@
+# One file for local AND single-host (EC2) deployment.
+# Locally it works with zero config (defaults below). For a public deploy,
+# copy .env.example → .env and set the host URLs there; compose substitutes
+# ${VARS} at parse/build time. NEXT_PUBLIC_* are build args, so changing them
+# requires `docker compose up --build` (the FE bundle is rebuilt).
+services:
+  ai:
+    build:
+      context: .
+      dockerfile: ai/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      # Comma-separated browser origins allowed by FastAPI CORS.
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000}
+      # text_analyzer reaches Ollama on the HOST (Ollama is not containerized yet).
+      # host.docker.internal resolves to the host from inside the container on
+      # Docker Desktop. On a Linux host, run Ollama in compose instead or set
+      # OLLAMA_URL via .env.
+      - OLLAMA_URL=${OLLAMA_URL:-http://host.docker.internal:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.1}
+    volumes:
+      - ./db:/app/db                 # persist results.json / drivers.json to host
+      - ./ai/driver_eval/data:/app/ai/driver_eval/data   # persist uploaded drivers.csv
+
+  n8n:
+    image: n8nio/n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_SECURE_COOKIE=false      # allow http (no TLS) login; set true behind HTTPS
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-Asia/Manila}
+      # Public addressing so generated webhook URLs are correct on a real host.
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - WEBHOOK_URL=${WEBHOOK_URL:-http://localhost:5678/}
+    volumes:
+      - n8n_data:/home/node/.n8n     # persist workflows + credentials
+    depends_on:
+      - ai
+      - mailhog
+
+  mailhog:
+    image: mailhog/mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"                  # SMTP — n8n sends here (in-network host: mailhog:1025)
+      - "8025:8025"                  # Web UI — view caught mail at http://localhost:8025
+
+  fe:
+    build:
+      context: ./fe
+      dockerfile: Dockerfile
+      # NEXT_PUBLIC_* are baked at build time and point at the URLs the BROWSER
+      # uses (host-published ports locally; the public host/IP in prod) — never
+      # compose DNS, since the browser is not on this network.
+      args:
+        - NEXT_PUBLIC_AI_URL=${NEXT_PUBLIC_AI_URL:-http://localhost:8001}
+        - NEXT_PUBLIC_N8N_URL=${NEXT_PUBLIC_N8N_URL:-http://localhost:5678}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - N8N_URL=http://n8n:5678        # server-side proxy route (/api/n8n/*) uses compose DNS
+    depends_on:
+      - ai
+      - n8n
+
+volumes:
+  n8n_data:
